@@ -21,8 +21,9 @@ export default function Navbar() {
             <>
               {/* User Icon from Google Profile */}
               {session.user?.image && (
+
                 <Image
-                  src={session.user?.image}
+                  src={session.user.image}
                   alt="Profile"
                   width={40}
                   height={40}
