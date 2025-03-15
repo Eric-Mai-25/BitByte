@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("https://fyivxbsmzdkcgobubnbq.supabase.co")
+  url      = env("DATABASE_URL")
 }
 
 model Review {
@@ -19,6 +19,6 @@ model Review {
   type String
   rating Int
   content String
-  createdAt DataTime @default(now())
-  
+  createdAt DateTime @default(now())
 }
+
