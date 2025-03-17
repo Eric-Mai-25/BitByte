@@ -1,18 +1,26 @@
 "use client";
 
-import {signIn, signOut, useSession} from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function Navbar() {
-    const {data: session} = useSession();
+  const { data: session } = useSession();
 
-    return (
-        <nav className="bg-gray-800 p-4">
+  return (
+    <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* Brand/Logo */}
-        <div className="text-white text-lg font-bold">
-          Google Auth App
+        <Link href={"/"} className="text-white text-lg font-bold">
+          BitByte
+        </Link >
+        <div className="flex items-center space-x-4">
+          {session && (
+            <Link href={"/create"} className="text-white hover:text-gray-300">
+              Create Review
+            </Link>
+          )}
         </div>
 
         {/* Right Side: Login/Logout and Icon */}
@@ -50,6 +58,6 @@ export default function Navbar() {
           )}
         </div>
       </div>
-      </nav>
-    )
+    </nav>
+  )
 }
