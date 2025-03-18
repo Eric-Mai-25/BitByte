@@ -1,8 +1,9 @@
 "use client";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-interface Review{
+interface Review {
   id: number;
   title: string;
   type: string;
@@ -14,12 +15,12 @@ export default function Home() {
   const { data: session } = useSession();
   const [reviews, setReviews] = useState<Review[]>([])
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch("/api/reviews")
-    .then((res)=> res.json())
-    .then(setReviews)
-    .catch(console.error)
-  },[]);
+      .then((res) => res.json())
+      .then(setReviews)
+      .catch(console.error)
+  }, []);
 
 
   return (
@@ -29,17 +30,16 @@ export default function Home() {
         {reviews.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {reviews.map((review) => (
-              <div
-                key={review.id}
-                className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition"
-              >
-                <h2 className="text-xl font-semibold">{review.title}</h2>
-                <p className="text-gray-600">{review.type}</p>
-                <p className="text-lg font-bold text-blue-500">
-                  Rating: {review.rating}/10
-                </p>
-                <p className="text-gray-700 line-clamp-2">{review.content}</p>
-              </div>
+              <Link href={`/reviews/${review.id}`} key={review.id}>
+                <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer">
+                  <h2 className="text-xl font-semibold">{review.title}</h2>
+                  <p className="text-gray-600">{review.type}</p>
+                  <p className="text-lg font-bold text-blue-500">
+                    Rating: {review.rating}/10
+                  </p>
+                  <p className="text-gray-700 line-clamp-2">{review.content}</p>
+                </div>
+              </Link>
             ))}
           </div>
         ) : (
