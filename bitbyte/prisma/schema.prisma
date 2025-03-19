@@ -13,6 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Users {
+  id String @id
+  email String @unique
+  name String?
+  reviews Review[]
+  createdAt DateTime @default(now())
+}
+
 model Review {
   id Int @id @default(autoincrement())
   title String
@@ -20,5 +28,7 @@ model Review {
   rating Int
   content String
   createdAt DateTime @default(now())
+  userId String
+  user Users @relation(fields: [userId], references: [id])
 }
 

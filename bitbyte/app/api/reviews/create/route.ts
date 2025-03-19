@@ -6,11 +6,22 @@ const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   const session = await getServerSession();
-  if (!session) {
+  if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { title, type, rating, content } = await request.json();
+
+  const user = await prisma.users.upsert({
+    where: {id: session.user.id},
+    update: {email: session.user.email!, name: session.user.name },
+    create: {
+      id: session.user.id,
+      email: session.user.email!,
+      name: session.user.name,
+    },
+  })
+
 
   try {
     const review = await prisma.review.create({
@@ -19,6 +30,7 @@ export async function POST(request: Request) {
         type,
         rating,
         content,
+        userId: user.id
       },
     });
     return NextResponse.json(review, { status: 201 });
