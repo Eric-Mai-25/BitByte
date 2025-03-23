@@ -9,6 +9,8 @@ interface Review {
   type: string;
   rating: number;
   content: string;
+  userId: string;
+  user: {name?:string | null};
 }
 
 export default function Home() {
@@ -38,6 +40,9 @@ export default function Home() {
                     Rating: {review.rating}/10
                   </p>
                   <p className="text-gray-700 line-clamp-2">{review.content}</p>
+                  <Link href={`/profile/${review.userId}`} className="text-blue-500 hover:underline">
+                    by {review.user?.name || "Anonymous"}
+                  </Link>
                 </div>
               </Link>
             ))}

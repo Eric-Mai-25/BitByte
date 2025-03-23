@@ -24,12 +24,13 @@ export default async function ProfilePage({
     params: {userId: string};
 }) {
     const session = await getServerSession(authOptions);
-    const {user, reviews} = await getUserAndReviews(params.userId);
+    const uId = await params
+    const {user, reviews} = await getUserAndReviews(uId.userId);
     if(!user) {
         notFound();
     }
 
-    const isOwnProfile = session?.user?.id === params.userId;
+    const isOwnProfile = session?.user?.id === uId.userId;
 
     return (
         <div className="min-h-screen bg-gray-100 p-4">
