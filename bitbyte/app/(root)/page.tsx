@@ -2,6 +2,8 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 interface Review {
   id: number;
@@ -16,6 +18,7 @@ interface Review {
 export default function Home() {
   const { data: session } = useSession();
   const [reviews, setReviews] = useState<Review[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     fetch("/api/reviews")
@@ -23,6 +26,12 @@ export default function Home() {
       .then(setReviews)
       .catch(console.error)
   }, []);
+
+  const handleProfileClick = (userId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push(`/profile/${userId}`)
+  }
 
 
   return (
@@ -40,9 +49,15 @@ export default function Home() {
                     Rating: {review.rating}/10
                   </p>
                   <p className="text-gray-700 line-clamp-2">{review.content}</p>
-                  <Link href={`/profile/${review.userId}`} className="text-blue-500 hover:underline">
+                  {/* <Link href={`/profile/${review.userId}`} className="text-blue-500 hover:underline">
                     by {review.user?.name || "Anonymous"}
-                  </Link>
+                  </Link> */}
+                  <span
+                    onClick={(e) => handleProfileClick(review.userId, e)}
+                    className="text-blue-500 hover:underline cursor-pointer"
+                    >
+                      by {review.user?.name || "Anonymous"}
+                  </span>
                 </div>
               </Link>
             ))}
