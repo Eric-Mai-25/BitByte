@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { use } from "react";
 
 type Review = {
   id: number;
@@ -36,7 +37,8 @@ async function fetchComments(reviewId: string): Promise<Comment[]> {
   return res.json();
 }
 
-export default function ReviewPage({ params }: { params: { id: string } }) {
+export default function ReviewPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = use(paramsPromise); // Unwrap params with React.use()
   const { data: session } = useSession();
   const router = useRouter();
   const [review, setReview] = useState<Review | null>(null);
