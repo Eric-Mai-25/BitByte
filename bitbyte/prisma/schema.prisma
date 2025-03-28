@@ -18,6 +18,7 @@ model Users {
   email String @unique
   name String?
   reviews Review[]
+  comments Comments[]
   createdAt DateTime @default(now())
 }
 
@@ -30,5 +31,19 @@ model Review {
   createdAt DateTime @default(now())
   userId String
   user Users @relation(fields: [userId], references: [id])
+  comments Comments[]
+}
+
+model Comments {
+  id Int @id@default(autoincrement())
+  content String
+  createdAt DateTime @default(now())
+  userId String
+  user Users @relation(fields: [userId], references: [id])
+  reviewId Int
+  review Review @relation(fields: [reviewId], references: [id])
+  parentId  Int?      // Nullable foreign key for replies
+  parent    Comments? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comments[] @relation("CommentReplies")
 }
 
