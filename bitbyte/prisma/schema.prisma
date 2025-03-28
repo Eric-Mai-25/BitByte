@@ -42,5 +42,8 @@ model Comments {
   user Users @relation(fields: [userId], references: [id])
   reviewId Int
   review Review @relation(fields: [reviewId], references: [id])
+  parentId  Int?      // Nullable foreign key for replies
+  parent    Comments? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comments[] @relation("CommentReplies")
 }
 
